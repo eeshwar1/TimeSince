@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EventListView: View {
-  
+    
     @StateObject var eventList = EventList()
     
     var body: some View {
@@ -16,26 +16,43 @@ struct EventListView: View {
         GeometryReader { (geometry) in
             
             ScrollView {
-                VStack(spacing: 50) {
+                
+                VStack(alignment: .center, spacing: 100) {
                     
                     ForEach(eventList.events, id: \.id) { event in
-                        HStack {
-                            EventView(event: event)
-                            Spacer()
-                        }.padding(10)
+                        VStack {
+                            HStack(spacing: 10) {
+                                EventView(event: event)
+                                Spacer()
+                                Button("-", action: { executeDelete(id: event.id) })
+                           }
+                            
+                        }
+                        
                         
                     }
                     
                     
                 }
-                .frame(minWidth: geometry.size.width, minHeight: geometry.size.height)
-                .scrollDisabled(false)
-                .padding(.bottom, 50)
+                .padding(.init(top: 50, leading: 0, bottom: 50, trailing: 0))
                 
-            }.frame(height: geometry.size.height)
+                
+                
+            }
+            .padding(10)
+            .scrollDisabled(false)
+
+            
             
             
         }
+    }
+    
+    func executeDelete(id: UUID) {
+        
+        print("Deleting event with id: \(id)")
+        
+        
     }
     
     
@@ -45,26 +62,18 @@ struct EventListView: View {
 struct EventListView_Previews: PreviewProvider {
     static var previews: some View {
         
-//        let eventList = EventList(events: [Event(name: "Event 1", date: "01/01/2022"),
-//                                Event(name: "Event 2", date: "02/02/2022"),
-//                                       Event(name: "Event 3", date: "03/03/2022"),
-//                                       Event(name: "Event 4", date: "04/04/2022"),
-//
-//                                       Event(name: "Event 5", date: "05/05/2022")
-//                                       ,
-//                                       Event(name: "Event 6", date: "06/06/2022")
-//                                       ,
-//                                       Event(name: "Event 7", date: "07/07/2022")
-//                                       ,
-//                                       Event(name: "Event 8", date: "08/08/2022")
-//                                       ,
-//                                       Event(name: "Event 9 ", date: "09/09/2022"),
-//                                       Event(name: "Event 10", date: "10/10/2022")]
-//                )
-//
-//
-        let eventList = EventList()
+        let eventList = EventList(events: [Event(name: "This is a really long event name that will wrap",                                   date: "01/01/2022"),
+                                           Event(name: "Event 2", date: "02/02/2022"
+                                                ),
+                                           Event(name: "Event 3", date: "02/02/2022"
+                                                ),
+                                           Event(name: "Event 4", date: "02/02/2022"
+                                                )
+                                        ]
+        )
+        
         EventListView(eventList: eventList)
+            .frame(maxHeight: .infinity)
         
     }
 }

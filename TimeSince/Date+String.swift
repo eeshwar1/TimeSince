@@ -14,7 +14,7 @@ extension Date {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-                 
+        
         return dateFormatter.string(from: self)
     }
     
@@ -22,7 +22,7 @@ extension Date {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                 
+        
         return dateFormatter.string(from: self)
     }
     
@@ -116,7 +116,7 @@ extension Date {
         // print("timeAgo is ===> \(timeAgo)")
         return timeAgo;
     }
-
+    
     
 }
 
@@ -124,13 +124,13 @@ extension String {
     
     
     func dateFromString() -> Date {
-                
-       let dateFormatter = DateFormatter()
-       dateFormatter.dateFormat = "MM-dd-yyyy"
-                
-       return dateFormatter.date(from: self) ?? Date()
-                
-                
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        
+        return dateFormatter.date(from: self) ?? Date()
+        
+        
     }
 }
 

@@ -15,56 +15,51 @@ struct EventView: View {
         
         GeometryReader { (geometry) in
             
-                HStack {
-                    
-                    VStack {
-                        HStack {
-                            Text(event.name ?? "Invalid")
-                                .font(.largeTitle)
-                                .bold()
-                                .frame(minWidth: 200, alignment: .leading)
-                            Spacer()
-                                .frame(minWidth: 50)
-                            Text(event.timeSince)
-                                .foregroundColor(.blue)
-                                .font(.body)
-                                .frame(minWidth: 100)
-                        }
-                        HStack {
-                            Text(event.dateValue).foregroundColor(.black)
-                                .font(.subheadline)
-                                .frame(minWidth: 50, alignment: .leading)
-                            Spacer()
-                                .frame(minWidth: 10)
-                            
-                            
-                        }
-                        HStack {
-                            Text(event.id?.uuidString ?? "Invalid").foregroundColor(.gray)
-                                .font(.subheadline)
-                                .frame(minWidth: 300, alignment: .leading)
-                            Spacer()
-                                .frame(minWidth: 5)
-                        }
-                        
-                        
-                        
+            HStack {
+                
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(event.name ?? "Invalid")
+                            .font(.largeTitle)
+                            .bold()
+                            .frame(minWidth: 300, alignment: .leading)
+                        Spacer()
+                            .frame(minWidth: 10)
+                        Text(event.timeSince)
+                            .foregroundColor(.blue)
+                            .font(.body)
+                            .frame(minWidth: 100)
                     }
-                    .frame(width: geometry.size.width - 30, height: 20, alignment: .leading)
-                    
-                    .padding(20)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(.gray, lineWidth: 2))
-                    
-                    
-                    Spacer()
-                    Text(event.timeSince)
+                    HStack(alignment: .center) {
+                        Text(event.dateValue).foregroundColor(.black)
+                            .font(.subheadline)
+                            .frame(width: 100, alignment: .leading)
+                        Spacer()
+                            .frame(minWidth: 50)
+                   
+                    }
+                    HStack(alignment: .center) {
+                        Text(event.id.uuidString).foregroundColor(.gray)
+                            .font(.subheadline)
+                            .frame(width: 300, alignment: .leading)
+                        Spacer()
+                            .frame(minWidth: 50)
+                    }
+                   
                 }
+                .padding(20)
+                .frame(width: geometry.size.width - 60,
+                       height: geometry.size.height, alignment: .leading)
                 
                 
                 
+               
             }
+                            
+                
+                
+        }.padding(.bottom, 10)
+            
         
     }
 }

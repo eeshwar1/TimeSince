@@ -19,7 +19,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -29,7 +29,9 @@ class ViewController: NSViewController {
         fetchEvents()
         
         setupSubviews()
-
+        
+        
+        
         
     }
     
@@ -39,9 +41,8 @@ class ViewController: NSViewController {
         
         contentView.addSubview(eventListView)
         
-        
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.widthAnchor.constraint(equalToConstant: 450).isActive = true
+        contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 480).isActive = true
         contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
         eventListView.translatesAutoresizingMaskIntoConstraints = false
         eventListView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
@@ -51,6 +52,7 @@ class ViewController: NSViewController {
     }
     
     fileprivate func fetchEvents() {
+        
         let fetchRequest: NSFetchRequest<EventEntity>
         
         fetchRequest = EventEntity.fetchRequest()
@@ -65,12 +67,16 @@ class ViewController: NSViewController {
             
             print("Event count: \(events.count)")
             
+            //            for event in events {
+            //
+            //                print("\(String(describing: event.id))")
+            //            }
             self.eventList.objectWillChange.send()
             self.eventList.setEvents(events: events)
             
             
         } catch let error as NSError {
-            print("Error fetching data: \(error)")
+            print("Error fetching events: \(error)")
         }
     }
     
@@ -79,16 +85,16 @@ class ViewController: NSViewController {
         var events: [Event] = []
         for eventEntity in eventEntities {
             
-            let event = Event(name: eventEntity.name ?? "None", date: eventEntity.date!.stringFromDateShort())
+            let event = Event(name: eventEntity.name ?? "None", date: eventEntity.date!.stringFromDateShort(), id: eventEntity.id ?? UUID())
             
             events.append(event)
         }
         
         return events
     }
-
-   
-
+    
+    
+    
     func addEventEntity(context: NSManagedObjectContext) {
         
         
@@ -97,7 +103,6 @@ class ViewController: NSViewController {
         eventEntity.id = UUID()
         eventEntity.name = "New Event at \(Date())"
         eventEntity.date = Date()
-        
         
         
         do {
@@ -113,14 +118,55 @@ class ViewController: NSViewController {
             
         } catch let error as NSError {
             
-            print("Error saving: \(error)")
+            print("Error adding event: \(error)")
         }
+    }
+    
+    func deleteEventEntity(eventEntity: EventEntity, context: NSManagedObjectContext)
+    {
+        
+        context.delete(eventEntity)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            
+            print("Error deleting event: \(error)")
+        }
+        
     }
     
     @IBAction func addEvent(sender: NSButton) {
         
         addEventEntity(context: self.managedContext)
     }
-
+    
+    //    @IBAction func deleteEvent(sender: NSButton) {
+    //
+    //        print("Delete event")
+    //
+    //        let fetchRequest: NSFetchRequest<EventEntity>
+    //
+    //        fetchRequest = EventEntity.fetchRequest()
+    //
+    //        fetchRequest.predicate = NSPredicate(format: "id = %@", "1712E90D-598B-48ED-ADB3-8AA1C00671FA")
+    //
+    //        do {
+    //
+    //            let fetchedResults = try self.managedContext.fetch(fetchRequest)
+    //
+    //            print(fetchedResults.count)
+    //
+    //            if let eventEntity = fetchedResults.first {
+    //
+    //                print("\(String(describing: eventEntity.id))")
+    //                self.managedContext.delete(eventEntity)
+    //
+    //            }
+    //
+    //        } catch let error as NSError {
+    //            print("Error fetching event: \(error)")
+    //        }
+    //    }
 }
 
