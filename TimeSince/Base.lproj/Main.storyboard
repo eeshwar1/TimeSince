@@ -706,26 +706,45 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="TimeSince" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="560"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqN-0k-9D2">
-                                <rect key="frame" x="10" y="10" width="460" height="250"/>
+                                <rect key="frame" x="10" y="10" width="620" height="540"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oD3-4m-5s9">
-                                        <rect key="frame" x="-7" y="223" width="43" height="32"/>
-                                        <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Euz-7f-xym">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="addEventWithSender:" target="XfG-lQ-9wD" id="YIj-HB-pAa"/>
-                                        </connections>
-                                    </button>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pz3-rF-1NS">
+                                        <rect key="frame" x="0.0" y="520" width="29" height="20"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MOk-mH-ZUQ">
+                                                <rect key="frame" x="-7" y="-7" width="43" height="32"/>
+                                                <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wec-TI-n7P">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="addEventWithSender:" target="XfG-lQ-9wD" id="QuJ-9b-8Kb"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="JFd-5N-X1N"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="5O9-Ha-vPs">
-                                        <rect key="frame" x="0.0" y="0.0" width="438" height="210"/>
+                                        <rect key="frame" x="10" y="0.0" width="600" height="500"/>
                                     </customView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="5O9-Ha-vPs" secondAttribute="trailing" constant="10" id="HZQ-fC-d9L"/>
+                                    <constraint firstItem="5O9-Ha-vPs" firstAttribute="leading" secondItem="PqN-0k-9D2" secondAttribute="leading" constant="10" id="JJR-lx-f5k"/>
+                                    <constraint firstItem="5O9-Ha-vPs" firstAttribute="centerX" secondItem="PqN-0k-9D2" secondAttribute="centerX" id="Jfn-Z4-ge6"/>
+                                </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
@@ -737,9 +756,13 @@
                             </stackView>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="PqN-0k-9D2" secondAttribute="bottom" constant="10" id="MnG-7L-aaY"/>
+                            <constraint firstItem="PqN-0k-9D2" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="10" id="SD6-SZ-5RH"/>
                             <constraint firstItem="PqN-0k-9D2" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="10" id="V5G-BY-m1Q"/>
                             <constraint firstAttribute="trailing" secondItem="PqN-0k-9D2" secondAttribute="trailing" constant="10" id="ZCA-A2-l1x"/>
                             <constraint firstAttribute="bottom" secondItem="PqN-0k-9D2" secondAttribute="bottom" constant="10" id="bP0-Rr-LzN"/>
+                            <constraint firstItem="PqN-0k-9D2" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="fmb-ac-PkF"/>
+                            <constraint firstAttribute="trailing" secondItem="PqN-0k-9D2" secondAttribute="trailing" constant="10" id="hYE-6D-Y8K"/>
                             <constraint firstItem="PqN-0k-9D2" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="j28-zK-ZIx"/>
                         </constraints>
                     </view>
@@ -749,7 +772,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="826"/>
         </scene>
     </scenes>
 </document>
