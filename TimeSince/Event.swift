@@ -32,6 +32,12 @@ class Event: Identifiable {
         
     }
     
+    var daysSince: String {
+        
+        date?.getDaysSince() ?? "Invalid"
+        
+    }
+    
     init() {
         
         self._id = UUID()
