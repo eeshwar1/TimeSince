@@ -117,6 +117,63 @@ extension Date {
         return timeAgo;
     }
     
+    func getDaysSince() -> String {
+        
+        let dateStr:String = self.stringFromDateLong()
+        
+        let formatter : DateFormatter = DateFormatter()
+        formatter.timeZone = NSTimeZone.local
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let now = formatter.string(from: NSDate() as Date)
+        let startDate = formatter.date(from: dateStr)
+        let endDate = formatter.date(from: now)
+        
+        // *** create calendar object ***
+        var calendar = NSCalendar.current
+        
+        // *** Get components using current Local & Timezone ***
+        // print(calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startDate!))
+        
+        // *** define calendar components to use as well Timezone to UTC ***
+        let unitFlags = Set<Calendar.Component>([.year, .month, .day, .hour, .minute, .second])
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        let dateComponents = calendar.dateComponents(unitFlags, from: startDate!, to: endDate!)
+        
+        // *** Get Individual components from date ***
+        let years = dateComponents.year!
+        let months = dateComponents.month!
+        let days = dateComponents.day!
+        
+        var daysAgo = ""
+        
+        if (days > 0) {
+            
+            
+           daysAgo = "\(days) days ago"
+            
+        } else {
+            
+            daysAgo = "less than a day ago"
+            
+        }
+        
+        if(months > 0){
+            
+            daysAgo = "\(months) months ago"
+           
+        }
+        
+        if(years > 0){
+            
+            
+            daysAgo = "\(years) years ago"
+            
+        }
+        
+        // print("timeAgo is ===> \(timeAgo)")
+        return daysAgo;
+    }
     
 }
 
