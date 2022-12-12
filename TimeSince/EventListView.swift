@@ -10,53 +10,104 @@ import SwiftUI
 struct EventListView: View {
     
     @StateObject var eventList = EventList()
+    
+    @State var addNew: Bool = false
+    
     var controller: ViewController?
     
     var body: some View {
         
+        
         GeometryReader { (geometry) in
             
-            ScrollView {
-                
-                VStack(alignment: .center, spacing: 50) {
-                    
-                    ForEach(eventList.events, id: \.id) { event in
-                        VStack {
-                            HStack() {
-                                EventView(event: event)
-//                                Spacer()
-                                Button("-", action: { executeDelete(id: event.id) })
-                           }
+            ZStack {
+                VStack {
+                    HStack {
+                        
+                        Button(action:
+                                { executeAdd() }) {
+                            Text("+")
+                                .bold()
+                                .padding(10)
+                                .frame(width: 50, height: 50)
+                                .background(Color.blue)
+                                .foregroundColor(Color.white)
+                        }
+                                .frame(width: 50, height: 50)
+                                .background(Color.blue).cornerRadius(10)
+                        
+                    }
+                    .padding(10)
+                    .frame(width: geometry.size.width, height: 80, alignment: .leading)
+                    ScrollView {
+                        
+                        VStack(alignment: .center, spacing: 50) {
+                            
+                            
+                            ForEach(eventList.events, id: \.id) { event in
+                                VStack {
+                                    HStack() {
+                                        EventView(event: event)
+                                        //                                Spacer()
+                                        Button(action:
+                                                { executeDelete(id: event.id) }) {
+                                            Text("-")
+                                                .bold()
+                                                .padding(10)
+                                                .frame(width: 50, height: 50)
+                                                .background(Color.red)
+                                                .foregroundColor(Color.white)
+                                        }
+                                                .frame(width: 50, height: 50)
+                                                .background(Color.red).cornerRadius(10)
+                                        
+                                        
+                                        
+                                    }
+                                    
+                                    
+                                }
+                                
+                                
+                            }
+                            
                             
                         }
+                        .padding(.init(top: 20, leading: 0, bottom: 50, trailing: 0))
+                        
                         
                         
                     }
-                    
+                    .padding()
+                    .scrollDisabled(false)
                     
                 }
-                .padding(.init(top: 50, leading: 0, bottom: 50, trailing: 0))
-                
-                
-                
+            
+                if addNew {
+                    
+                    NewEventView(addNew: $addNew, controller: controller)
+                }
             }
-            .padding()
-            .scrollDisabled(false)
-
-            
-            
             
         }
+        
     }
     
     func executeDelete(id: UUID) {
         
-        print("Deleting event with id: \(id)")
+//        print("Deleting event with id: \(id)")
         
         if let controller = controller {
             controller.deleteEvent(id: id)
             
         }
+    }
+    
+    func executeAdd() {
+        
+        self.addNew = true
+        
+        
     }
     
     
