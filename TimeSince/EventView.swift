@@ -20,7 +20,7 @@ struct EventView: View {
                     
                     VStack(alignment: .leading) {
                         HStack {
-                            Text(event.name ?? "Invalid")
+                            Text(event.name)
                                 .font(.largeTitle)
                                 .bold()
                                 .frame(minWidth: 200, alignment: .leading)
