@@ -10,7 +10,7 @@ import SwiftUI
 struct EventListView: View {
     
     @StateObject var eventList = EventList()
-    public var controller: ViewController?
+    var controller: ViewController?
     
     var body: some View {
         
@@ -53,9 +53,10 @@ struct EventListView: View {
         
         print("Deleting event with id: \(id)")
         
-        controller?.deleteEvent(id: id)
-        
-        
+        if let controller = controller {
+            controller.deleteEvent(id: id)
+            
+        }
     }
     
     
