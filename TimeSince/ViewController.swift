@@ -60,14 +60,16 @@ class ViewController: NSViewController {
             
             let eventsEntities = try managedContext.fetch(fetchRequest)
             
-            print("Event Entity count: \(eventsEntities.count)")
+//            print("Event Entity count: \(eventsEntities.count)")
             
             let events = convertEvents(eventEntities: eventsEntities)
             
-            print("Event count: \(events.count)")
+            let sortedEvents = events.sorted(by: { $0.date > $1.date })
+            
+//            print("Event count: \(events.count)")
             
             self.eventList.objectWillChange.send()
-            self.eventList.setEvents(events: events)
+            self.eventList.setEvents(events: sortedEvents)
             
             
         } catch let error as NSError {
@@ -98,43 +100,24 @@ class ViewController: NSViewController {
         
         let eventEntity = EventEntity(context: self.managedContext)
         
-//        eventEntity.id = UUID()
-//        eventEntity.name = "New Event"
-//        eventEntity.date = Date()
-        
         eventEntity.name = event.name
         eventEntity.date = event.date
         eventEntity.id = event.id
         
-        
         do {
             
-            
-            try managedContext.save()
+           try managedContext.save()
             
             self.eventList.objectWillChange.send()
             
             fetchEvents()
-            
-            
-            
+           
         } catch let error as NSError {
             
             print("Error adding event: \(error)")
         }
     }
     
-    
-    @IBAction func addEvent(sender: NSButton) {
-        
-        let hostingController = NSHostingController(rootView: NewEventView(controller: self))
-        
-        let window = NSWindow(contentViewController: hostingController)
-        
-        window.title = "Add an Event"
-        window.makeKeyAndOrderFront(nil)
-        // addEventEntity(context: self.managedContext)
-    }
     
     fileprivate func deleteEventEntity(id: UUID)
     {
@@ -165,8 +148,6 @@ class ViewController: NSViewController {
     func deleteEvent(id: UUID) {
         
         deleteEventEntity(id: id)
-        
-        self.eventList.objectWillChange.send()
         
         fetchEvents()
     }
