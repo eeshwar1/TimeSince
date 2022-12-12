@@ -16,25 +16,25 @@ class Event: Identifiable {
         get { return self._id }
         set { self._id = newValue }
     }
-    var name: String?
-    var date: Date?
+    var name: String
+    var date: Date
     var addedDate: Date?
     var modifiedDate: Date?
     
     var dateValue: String {
         
-        date?.stringFromDateShort() ?? "Invalid"
+        date.stringFromDateShort()
     }
     
     var timeSince: String {
         
-        date?.getDateTimeDiff() ?? "Invalid"
+        date.getDateTimeDiff()
         
     }
     
     var daysSince: String {
         
-        date?.getDaysSince() ?? "Invalid"
+        date.getDaysSince()
         
     }
     
@@ -68,8 +68,8 @@ class Event: Identifiable {
     func asDict() -> [String: Any] {
         
         let dict: [String: Any] = [
-            "name": name ?? "Invalid",
-            "date": date?.stringFromDateShort() ?? "Invalid"]
+            "name": name,
+            "date": date.stringFromDateShort()]
         
         return dict
     }
