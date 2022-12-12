@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NewEventView: View {
     
+    @Binding var addNew: Bool
+    
     @State private var name: String = "Event Name"
     
     @State private var date: Date = Date()
@@ -30,13 +32,20 @@ struct NewEventView: View {
             
                 
             }
-            Button("Add",action: addEvent)
-                .keyboardShortcut(.defaultAction)
+            
+            HStack {
+                Button("Add",action: { addEvent() })
+                    .keyboardShortcut(.defaultAction)
+                Button("Cancel",action: { cancelAdd() })
+                    .keyboardShortcut(.cancelAction)
+            }
                 
         }
         .padding(10)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-       
+        .frame(maxWidth: 300, maxHeight: 200)
+        .border(.gray)
+        .background(.regularMaterial.shadow(.drop(color: .black, radius: 10)))
+        
         
     }
     
@@ -44,15 +53,24 @@ struct NewEventView: View {
         
         print("Add Event")
         
+        self.addNew = false
+        
         if let controller = controller {
             
             controller.addEvent(event: Event(name: name, date: date.stringFromDateShort()))
         }
     }
+    
+    func cancelAdd() {
+        
+        self.addNew = false
+    }
 }
 
 struct NewEventView_Previews: PreviewProvider {
     static var previews: some View {
-        NewEventView()
+    
+        
+        NewEventView(addNew: .constant(true))
     }
 }
