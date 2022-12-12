@@ -30,21 +30,16 @@ class ViewController: NSViewController {
         
         setupSubviews()
         
-        
-        
-        
     }
     
     fileprivate func setupSubviews() {
         
-        var eventListView = EventListView(eventList: self.eventList)
-        
-        eventListView.controller = self
+        let eventListView = EventListView(eventList: self.eventList, controller: self)
         
         let hostingView = NSHostingView(rootView: eventListView )
         
         contentView.addSubview(hostingView)
-       
+        
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 480).isActive = true
         contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
@@ -71,10 +66,6 @@ class ViewController: NSViewController {
             
             print("Event count: \(events.count)")
             
-            //            for event in events {
-            //
-            //                print("\(String(describing: event.id))")
-            //            }
             self.eventList.objectWillChange.send()
             self.eventList.setEvents(events: events)
             
@@ -97,22 +88,29 @@ class ViewController: NSViewController {
         return events
     }
     
+    func addEvent(event: Event) {
+        
+        addEventEntity(event: event)
+    }
     
-    
-    func addEventEntity(context: NSManagedObjectContext) {
+    func addEventEntity(event: Event) {
         
         
-        let eventEntity = EventEntity(context: context)
+        let eventEntity = EventEntity(context: self.managedContext)
         
-        eventEntity.id = UUID()
-        eventEntity.name = "New Event"
-        eventEntity.date = Date()
+//        eventEntity.id = UUID()
+//        eventEntity.name = "New Event"
+//        eventEntity.date = Date()
+        
+        eventEntity.name = event.name
+        eventEntity.date = event.date
+        eventEntity.id = event.id
         
         
         do {
             
             
-            try context.save()
+            try managedContext.save()
             
             self.eventList.objectWillChange.send()
             
@@ -129,7 +127,13 @@ class ViewController: NSViewController {
     
     @IBAction func addEvent(sender: NSButton) {
         
-        addEventEntity(context: self.managedContext)
+        let hostingController = NSHostingController(rootView: NewEventView(controller: self))
+        
+        let window = NSWindow(contentViewController: hostingController)
+        
+        window.title = "Add an Event"
+        window.makeKeyAndOrderFront(nil)
+        // addEventEntity(context: self.managedContext)
     }
     
     fileprivate func deleteEventEntity(id: UUID)
