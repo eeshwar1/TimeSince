@@ -712,32 +712,8 @@
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqN-0k-9D2">
                                 <rect key="frame" x="10" y="10" width="620" height="540"/>
                                 <subviews>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pz3-rF-1NS">
-                                        <rect key="frame" x="0.0" y="520" width="29" height="20"/>
-                                        <subviews>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MOk-mH-ZUQ">
-                                                <rect key="frame" x="-7" y="-7" width="43" height="32"/>
-                                                <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wec-TI-n7P">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <action selector="addEventWithSender:" target="XfG-lQ-9wD" id="QuJ-9b-8Kb"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="JFd-5N-X1N"/>
-                                        </constraints>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="5O9-Ha-vPs">
-                                        <rect key="frame" x="10" y="0.0" width="600" height="500"/>
+                                        <rect key="frame" x="10" y="0.0" width="600" height="540"/>
                                     </customView>
                                 </subviews>
                                 <constraints>
@@ -747,10 +723,8 @@
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
-                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
