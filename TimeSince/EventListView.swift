@@ -10,6 +10,7 @@ import SwiftUI
 struct EventListView: View {
     
     @StateObject var eventList = EventList()
+    public var controller: ViewController?
     
     var body: some View {
         
@@ -17,13 +18,13 @@ struct EventListView: View {
             
             ScrollView {
                 
-                VStack(alignment: .center, spacing: 100) {
+                VStack(alignment: .center, spacing: 50) {
                     
                     ForEach(eventList.events, id: \.id) { event in
                         VStack {
-                            HStack(spacing: 10) {
+                            HStack() {
                                 EventView(event: event)
-                                Spacer()
+//                                Spacer()
                                 Button("-", action: { executeDelete(id: event.id) })
                            }
                             
@@ -39,7 +40,7 @@ struct EventListView: View {
                 
                 
             }
-            .padding(10)
+            .padding()
             .scrollDisabled(false)
 
             
@@ -52,6 +53,8 @@ struct EventListView: View {
         
         print("Deleting event with id: \(id)")
         
+        controller?.deleteEvent(id: id)
+        
         
     }
     
@@ -62,7 +65,7 @@ struct EventListView: View {
 struct EventListView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let eventList = EventList(events: [Event(name: "This is a really long event name that will wrap",                                   date: "01/01/2022"),
+        let eventList = EventList(events: [Event(name: "This is a really long event name that will be truncated",                                   date: "01/01/2022"),
                                            Event(name: "Event 2", date: "02/02/2022"
                                                 ),
                                            Event(name: "Event 3", date: "02/02/2022"
