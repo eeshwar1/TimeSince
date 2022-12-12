@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65171DBF2946C5F000E9734B /* NewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65171DBE2946C5F000E9734B /* NewEventView.swift */; };
 		65886D33293C5AA500F8E578 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65886D2E293C5AA500F8E578 /* Event.swift */; };
 		65886D34293C5AA500F8E578 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65886D2F293C5AA500F8E578 /* EventListView.swift */; };
 		65886D35293C5AA500F8E578 /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65886D30293C5AA500F8E578 /* EventList.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65171DBE2946C5F000E9734B /* NewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventView.swift; sourceTree = "<group>"; };
 		65886D2E293C5AA500F8E578 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		65886D2F293C5AA500F8E578 /* EventListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
 		65886D30293C5AA500F8E578 /* EventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				65886D32293C5AA500F8E578 /* EventView.swift */,
 				65A7E9F3292FD48D0092D3F6 /* AppDelegate.swift */,
 				65A7E9F5292FD48D0092D3F6 /* ViewController.swift */,
+				65171DBE2946C5F000E9734B /* NewEventView.swift */,
 				65A7E9FA292FD48E0092D3F6 /* Assets.xcassets */,
 				65A7E9FC292FD48E0092D3F6 /* Main.storyboard */,
 				65A7E9FF292FD48E0092D3F6 /* TimeSince.entitlements */,
@@ -156,6 +159,7 @@
 				65A7E9F9292FD48D0092D3F6 /* TimeSince.xcdatamodeld in Sources */,
 				65A7E9F6292FD48D0092D3F6 /* ViewController.swift in Sources */,
 				65A7E9F4292FD48D0092D3F6 /* AppDelegate.swift in Sources */,
+				65171DBF2946C5F000E9734B /* NewEventView.swift in Sources */,
 				65886D37293C5AA500F8E578 /* EventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
