@@ -26,7 +26,7 @@ struct EventView: View {
                                 .frame(minWidth: 200, alignment: .leading)
                             Spacer()
                                 .frame(minWidth: 10)
-                            Text(event.timeSince)
+                            Text(event.daysSince)
                                 .foregroundColor(.blue)
                                 .font(.body)
                                 .frame(minWidth: 100)
