@@ -146,33 +146,84 @@ extension Date {
         let days = dateComponents.day!
         
         var daysAgo = ""
-        
-        if (days > 0) {
-            
-            
-           daysAgo = "\(days) days ago"
-            
-        } else {
-            
-            daysAgo = "less than a day ago"
-            
-        }
-        
-        if(months > 0){
-            
-            daysAgo = "\(months) months ago"
-           
-        }
+        var tailString = ""
         
         if(years > 0){
             
             
-            daysAgo = "\(years) years ago"
+            daysAgo = "\(years) years"
+            tailString = " ago"
+            
+        } else {
+            
+            if (years < 0) {
+                
+                daysAgo = "\(-1 * years) years"
+                tailString = " from now"
+            }
+        }
+        
+        if(months > 0){
+            
+            if (daysAgo == "") {
+                daysAgo = "\(months) months"
+            } else {
+                
+                daysAgo = daysAgo + " \(months) months"
+            }
+            
+            tailString = " ago"
+        } else {
+        
+            if (months < 0) {
+                
+                if (daysAgo == "") {
+                    
+                    daysAgo = "\(-1 * months) months"
+                } else {
+                    
+                    daysAgo = daysAgo + " and \(-1 * months) months"
+                }
+                
+                tailString = " from now"
+            }
             
         }
         
-        // print("timeAgo is ===> \(timeAgo)")
-        return daysAgo;
+        if (days > 0) {
+            
+            if (daysAgo == "") {
+                daysAgo = "\(days) days"
+            } else {
+                
+                daysAgo = daysAgo + " and \(days) days"
+            }
+            tailString = " ago"
+           
+            
+        } else {
+            
+            if (days < 0) {
+                
+                if (daysAgo == "") {
+                    daysAgo = "\(-1 * days) days"
+                } else {
+                    
+                    daysAgo = daysAgo + " and \(-1 * days) days"
+                }
+                
+            }
+        
+            
+            tailString = " from now"
+            
+        }
+        
+       
+        
+       
+        
+        return daysAgo + tailString;
     }
     
 }
