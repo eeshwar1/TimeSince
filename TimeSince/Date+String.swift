@@ -113,7 +113,6 @@ extension Date {
             }
         }
         
-        // print("timeAgo is ===> \(timeAgo)")
         return timeAgo;
     }
     
@@ -144,6 +143,9 @@ extension Date {
         let years = dateComponents.year!
         let months = dateComponents.month!
         let days = dateComponents.day!
+//        let hours = dateComponents.hour!
+//        let minutes = dateComponents.minute!
+//        let seconds = dateComponents.second!
         
         var daysAgo = ""
         var tailString = ""
@@ -211,11 +213,19 @@ extension Date {
                     
                     daysAgo = daysAgo + " and \(-1 * days) days"
                 }
+                tailString = " from now"
                 
+            } else {
+                
+                if (daysAgo == "") {
+                    
+                    daysAgo = "Less than a day"
+                }
+                tailString = ""
             }
         
             
-            tailString = " from now"
+            
             
         }
         
