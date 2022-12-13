@@ -9,7 +9,7 @@ import Foundation
 
 class EventList: ObservableObject {
     
-    var events: [Event]
+    private var events: [Event]
     
     init() {
         
@@ -23,5 +23,11 @@ class EventList: ObservableObject {
     func setEvents(events: [Event]) {
         
         self.events = events
+    }
+    
+    func getEvents() -> [Event] {
+        
+        return self.events
+        
     }
 }
