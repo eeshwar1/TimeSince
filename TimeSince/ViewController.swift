@@ -64,12 +64,9 @@ class ViewController: NSViewController {
             
             let events = convertEvents(eventEntities: eventsEntities)
             
-            let sortedEvents = events.sorted(by: { $0.date > $1.date })
+            self.eventList.setEvents(events: events)
             
-//            print("Event count: \(events.count)")
-            
-            self.eventList.objectWillChange.send()
-            self.eventList.setEvents(events: sortedEvents)
+            sortEvents(by: "date", ascendingOrder: false)
             
             
         } catch let error as NSError {
@@ -150,6 +147,45 @@ class ViewController: NSViewController {
         deleteEventEntity(id: id)
         
         fetchEvents()
+    }
+    
+    func sortEvents(by field: String, ascendingOrder: Bool) {
+        
+        let events = self.eventList.getEvents()
+        
+        var sortedEvents: [Event] = []
+        
+        if (field == "name") {
+            
+            if (ascendingOrder == true) {
+                sortedEvents = events.sorted(by: { $0.name < $1.name})
+            } else {
+                
+                sortedEvents = events.sorted(by: { $0.name > $1.name})
+            }
+            
+            
+        } else {
+            
+            if (field == "date") {
+                
+                if (ascendingOrder == true) {
+                    
+                    sortedEvents = events.sorted(by: {$0.date < $1.date})
+                } else {
+                    
+                    sortedEvents = events.sorted(by: {$0.date > $1.date})
+                }
+                
+            } else {
+                
+                sortedEvents = events
+            }
+        }
+        
+        self.eventList.objectWillChange.send()
+        self.eventList.setEvents(events: sortedEvents)
+        
     }
     
 }
