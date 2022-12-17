@@ -41,7 +41,7 @@ class ViewController: NSViewController {
         contentView.addSubview(hostingView)
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 480).isActive = true
+        contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 600).isActive = true
         contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         hostingView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
@@ -149,6 +149,46 @@ class ViewController: NSViewController {
         fetchEvents()
     }
     
+    func updateEvent(event: Event) {
+        
+        updateEventEntity(event: event)
+        
+        fetchEvents()
+        
+    }
+    
+    func updateEventEntity(event: Event) {
+        
+        let fetchRequest: NSFetchRequest<EventEntity>
+        
+        fetchRequest = EventEntity.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "id = %@", event.id.uuidString)
+        
+        do {
+            
+            let fetchedResults = try self.managedContext.fetch(fetchRequest)
+            
+            print(fetchedResults.count)
+            
+            if let eventEntity = fetchedResults.first {
+                
+                print("\(String(describing: eventEntity.id))")
+                
+                eventEntity.name = event.name
+                eventEntity.date = event.date
+                try self.managedContext.save()
+                
+                
+            }
+            
+        } catch let error as NSError {
+            print("Error fetching event: \(error)")
+        }
+        
+        
+        
+    }
     func sortEvents(by field: String, ascendingOrder: Bool) {
         
         let events = self.eventList.getEvents()
