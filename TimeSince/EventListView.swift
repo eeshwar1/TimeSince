@@ -136,13 +136,10 @@ extension EventListView {
                                 .contentShape(Rectangle())
                                 .onTapGesture{
                                     
-                                    print("Tapped on \(event.name)")
                                     self.editEvent = true
                                     self.event = event
                                     
                                 }
-                            
-                           
                             
                             Button(action:
                                     {
