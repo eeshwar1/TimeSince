@@ -12,9 +12,14 @@ struct EventListView: View {
     @StateObject var eventList = EventList()
     
     @State var addNew: Bool = false
+    @State var editEvent: Bool  = false
+    
+    @State var event: Event = Event()
     
     @State var sortedBy: String = "date"
     @State var ascendingOrder: Bool = false
+    
+    @State var showingConfirmation: Bool = false
     
     var controller: ViewController?
     
@@ -27,9 +32,10 @@ struct EventListView: View {
                     HStack {
                         
                         Button(action: { executeAdd() }) {
-                            Text("+")
+                            Label("",systemImage: "plus")
                                 .bold()
-                                .padding(10)
+                                .font(.system(size:20))
+                                .padding([.leading, .bottom], 10)
                                 .frame(width: 50, height: 50)
                                 .background(Color.blue)
                                 .foregroundColor(Color.white)
@@ -48,12 +54,30 @@ struct EventListView: View {
                     .frame(width: geometry.size.width, height: 80, alignment: .leading)
                     
                     EventStack
-                 }
+                        
+                }.confirmationDialog("Delete Event", isPresented: $showingConfirmation) {
+                    
+                            Button("Yes") {
+                                
+                                executeDelete(id: event.id)
+                            }
+                            Button("No", role: .cancel) {
+                            }
+                        
+                    
+                } message: {
+                    Text("Do you want to delete the event?")
+                }
                 
                 if addNew {
 
                     NewEventView(addNew: $addNew, controller: controller)
                       
+                }
+                
+                if editEvent {
+                    
+                    EventDetailsView(editEvent: $editEvent, event: event, controller: controller)
                 }
                 
             }
@@ -63,6 +87,8 @@ struct EventListView: View {
     func executeDelete(id: UUID) {
             
             //        print("Deleting event with id: \(id)")
+        
+            self.showingConfirmation = true
             
             if let controller = controller {
                 controller.deleteEvent(id: id)
@@ -107,13 +133,43 @@ extension EventListView {
                     VStack {
                         HStack() {
                             EventView(event: event)
+                                .contentShape(Rectangle())
+                                .onTapGesture{
+                                    
+                                    print("Tapped on \(event.name)")
+                                    self.editEvent = true
+                                    self.event = event
+                                    
+                                }
+                            
+                           
+                            
                             Button(action:
                                     {
-                                 executeDelete(id: event.id)
+                                 
+                                self.editEvent = true
+                                self.event = event
                                 
                             }) {
-                                Text("-")
+                                Label("",systemImage: "square.and.pencil")
                                     .bold()
+                                    .font(.system(size:20))
+                                    .padding(10)
+                                    .frame(width: 50, height: 50)
+                                    .background(Color.yellow)
+                                    .foregroundColor(Color.white)
+                            }
+                                    .frame(width: 50, height: 50)
+                                                                .background(Color.yellow).cornerRadius(10)
+                            
+                            Button(action:
+                                    {
+                                 showingConfirmation = true
+                                
+                            }) {
+                                Label("",systemImage: "delete.backward")
+                                    .bold()
+                                    .font(.system(size:20))
                                     .padding(10)
                                     .frame(width: 50, height: 50)
                                     .background(Color.red)
