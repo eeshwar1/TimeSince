@@ -68,8 +68,6 @@ struct EventDetailsView: View {
     
     func updateEvent() {
         
-        print("Save Event")
-        
         self.editEvent = false
         
         if let controller = controller {
