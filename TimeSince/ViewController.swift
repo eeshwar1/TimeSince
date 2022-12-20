@@ -60,13 +60,11 @@ class ViewController: NSViewController {
             
             let eventsEntities = try managedContext.fetch(fetchRequest)
             
-//            print("Event Entity count: \(eventsEntities.count)")
+//             print("Event Entity count: \(eventsEntities.count)")
             
             let events = convertEvents(eventEntities: eventsEntities)
             
             self.eventList.setEvents(events: events)
-            
-            sortEvents(by: "date", ascendingOrder: false)
             
             
         } catch let error as NSError {
@@ -189,44 +187,7 @@ class ViewController: NSViewController {
         
         
     }
-    func sortEvents(by field: String, ascendingOrder: Bool) {
-        
-        let events = self.eventList.getEvents()
-        
-        var sortedEvents: [Event] = []
-        
-        if (field == "name") {
-            
-            if (ascendingOrder == true) {
-                sortedEvents = events.sorted(by: { $0.name < $1.name})
-            } else {
-                
-                sortedEvents = events.sorted(by: { $0.name > $1.name})
-            }
-            
-            
-        } else {
-            
-            if (field == "date") {
-                
-                if (ascendingOrder == true) {
-                    
-                    sortedEvents = events.sorted(by: {$0.date < $1.date})
-                } else {
-                    
-                    sortedEvents = events.sorted(by: {$0.date > $1.date})
-                }
-                
-            } else {
-                
-                sortedEvents = events
-            }
-        }
-        
-        self.eventList.objectWillChange.send()
-        self.eventList.setEvents(events: sortedEvents)
-        
-    }
+    
     
 }
 
