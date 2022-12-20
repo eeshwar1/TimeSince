@@ -320,57 +320,6 @@ struct SortButtonEx: View {
     
 }
 
-struct DropDownButton: View {
-    
-    @Binding var sortedBy: String
-    @Binding var ascendingOrder: Bool
-
-    var body: some View {
-        
-        HStack {
-            Picker(selection: $sortedBy,
-                   label: Text("Sort by")
-                      .bold()
-                      .font(.system(size:14))
-                      .foregroundColor(Color.white))
-            {
-                
-                Label("Name", systemImage: "n.circle").tag("Name")
-                Divider()
-                Label("Date", systemImage: "d.circle").tag("Date")
-            }
-            .pickerStyle(.menu)
-            .menuStyle(.borderedButton)
-            
-        
-            Button (action: {
-                
-                ascendingOrder.toggle()
-                
-            }) {
-                
-                Label("",systemImage: ascendingOrder ? "arrow.down": "arrow.up")
-                    .font(.system(size:14))
-                    .bold()
-                    .padding([.leading,.bottom], 10)
-                    .frame(width: 30, height: 50)
-                    .background(Color.orange)
-                    .foregroundColor(Color.white)
-            }
-            .frame(width: 30, height: 50)
-            .background(Color.orange).cornerRadius(5)
-
-            
-        }
-        .padding(10)
-        .frame(width: 200, height: 50)
-        .background(Color.orange).cornerRadius(5)
-
-        
-       
-    }
-}
-
 struct EventListView_Previews: PreviewProvider {
     static var previews: some View {
         
