@@ -51,7 +51,7 @@ struct EventListView: View {
 //                        SortButton(field: "Name")
 //                        SortButton(field: "Date")
                 
-                        DropDownButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}), ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
+                        DropdownButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}), ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
 
                         
                     }
