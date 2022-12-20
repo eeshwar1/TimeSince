@@ -13,9 +13,11 @@ struct EventDetailsView: View {
     
     @State var event: Event
     
-//    @State private var name: String = "Event Name"
-//
-//    @State private var date: Date = Date()
+    @FocusState private var focusedField: FormField?
+    
+    enum FormField {
+        case Name, Date
+      }
     
     var controller: ViewController?
     
@@ -29,11 +31,24 @@ struct EventDetailsView: View {
             Form {
               
                 TextField("Name", text: $event.name )
+                    .focused($focusedField, equals: .Name)
                 DatePicker("Date", selection: $event.date,
                            displayedComponents: .date)
+                .focused($focusedField, equals: .Date)
             
                 
             }
+            .onSubmit {
+                switch focusedField {
+                case .Name:
+                    focusedField = .Date
+                case .Date:
+                    focusedField = nil
+                default:
+                    focusedField = nil
+                }
+            }
+            
             
             HStack {
                 Button("Save",action: { updateEvent() })
