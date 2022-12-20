@@ -45,6 +45,7 @@ struct EventListView: View {
                         .frame(width: 50, height: 50)
                         .background(Color.blue).cornerRadius(10)
                         .keyboardShortcut("n")
+                        .help("New Event")
                         
 //
 //                        SortButton(field: "Name")
@@ -78,7 +79,7 @@ struct EventListView: View {
                     
                             Button("No", role: .cancel) {
                                 
-                                print("Not deleting")
+                                
                             }
                         
                             
@@ -166,25 +167,26 @@ extension EventListView {
                             }
                                     .frame(width: 50, height: 50)
                                     .background(Color.yellow).cornerRadius(10)
+                                    .help("Edit")
                             
                             Button(action:
                                     {
-                                 showingConfirmation = true
+                                showingConfirmation = true
                                 currentEventID = event.id
                                 currentEvent = event
                                 
                             }) {
                                 Label("",systemImage: "delete.backward")
-                                    .bold()
                                     .font(.system(size:20))
-                                    .padding(10)
+                                    .bold()
                                     .frame(width: 50, height: 50)
                                     .background(Color.red)
                                     .foregroundColor(Color.white)
                             }
                             .frame(width: 50, height: 50)
                             .background(Color.red).cornerRadius(10)
-                             
+                            .help("Delete")
+                            
                         }
                     }
                 }
