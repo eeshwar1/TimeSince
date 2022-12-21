@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NewEventView: View {
     
+    @State private var location: CGPoint = CGPoint(x: 200, y: 200)
+    
     @Binding var addNew: Bool
     
     @State private var name: String = "Event Name"
@@ -16,6 +18,13 @@ struct NewEventView: View {
     @State private var date: Date = Date()
     
     var controller: ViewController?
+    
+    var simpleDrag: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                self.location = value.location
+            }
+    }
     
     var body: some View {
         
@@ -30,7 +39,6 @@ struct NewEventView: View {
                 DatePicker("Date", selection: $date,
                            displayedComponents: .date)
             
-                
             }
             
             HStack {
@@ -42,12 +50,15 @@ struct NewEventView: View {
                 
         }
         .padding(10)
-        .frame(maxWidth: 300, maxHeight: 200)
-        .border(.gray)
-        .background(.regularMaterial.shadow(.drop(color: .black, radius: 10)))
-        
+        .frame(maxWidth: 400, maxHeight: 200).cornerRadius(10)
+        .border(.gray, width: 4).cornerRadius(10)
+        .background(.ultraThinMaterial.shadow(.drop(color: .black, radius: 20)))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(color: .black, radius: 10)
+    
         
     }
+    
     
     func addEvent() {
         
@@ -74,3 +85,5 @@ struct NewEventView_Previews: PreviewProvider {
         NewEventView(addNew: .constant(true))
     }
 }
+
+
