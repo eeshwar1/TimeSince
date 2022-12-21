@@ -14,7 +14,7 @@ struct DropdownSortButton: View {
     
     @State var bgColor: Color = Color.purple
     @State var fgColor: Color = Color.white
-    @State var borderColor: Color = Color.gray
+    @State var borderColor: Color = Color.white.opacity(0.5)
 
     var body: some View {
         
@@ -43,16 +43,16 @@ struct DropdownSortButton: View {
                 Label("",systemImage: ascendingOrder ? "arrow.down": "arrow.up")
                     .font(.system(size:20))
                     .bold()
-                    .padding(.leading, 10)
-                    .frame(width: 30, height: 27)
-                    .background(bgColor)
+                    .padding([.leading, .bottom], 10)
+                    .frame(width: 40, height: 60)
+                    .background(bgColor).cornerRadius(5)
                     .foregroundColor(fgColor)
-                    .border(borderColor)
+                    
                     
             }
-            .frame(width: 30, height: 40)
+            .frame(width: 40, height: 40)
             .background(bgColor).cornerRadius(5)
-            .contentShape(Rectangle())
+            .border(borderColor, width: 2.0).cornerRadius(5)
             .keyboardShortcut("s", modifiers: [.command, .shift])
             .help("Sort Order")
 
@@ -61,6 +61,7 @@ struct DropdownSortButton: View {
         .padding(10)
         .frame(width: 200, height: 50)
         .background(bgColor).cornerRadius(5)
+        
 
         
        
