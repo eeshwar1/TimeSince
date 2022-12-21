@@ -11,6 +11,10 @@ struct DropdownButton: View {
     
     @Binding var sortedBy: String
     @Binding var ascendingOrder: Bool
+    
+    @State var bgColor: Color = Color.purple
+    @State var fgColor: Color = Color.white
+    @State var borderColor: Color = Color.gray
 
     var body: some View {
         
@@ -19,7 +23,7 @@ struct DropdownButton: View {
                    label: Text("Sort by")
                       .bold()
                       .font(.system(size:14))
-                      .foregroundColor(Color.white))
+                      .foregroundColor(fgColor))
             {
                 
                 Label("Name", systemImage: "n.circle").tag("Name")
@@ -41,25 +45,31 @@ struct DropdownButton: View {
                     .bold()
                     .padding(.leading, 10)
                     .frame(width: 30, height: 27)
-                    .background(Color.orange)
-                    .foregroundColor(Color.white)
-                    .border(.yellow)
+                    .background(bgColor)
+                    .foregroundColor(fgColor)
+                    .border(borderColor)
                     
             }
             .frame(width: 30, height: 40)
-            .background(Color.orange).cornerRadius(5)
+            .background(bgColor).cornerRadius(5)
             .contentShape(Rectangle())
-            .keyboardShortcut("a", modifiers: [.command, .shift])
+            .keyboardShortcut("s", modifiers: [.command, .shift])
             .help("Sort Order")
 
             
         }
         .padding(10)
         .frame(width: 200, height: 50)
-        .background(Color.orange).cornerRadius(5)
+        .background(bgColor).cornerRadius(5)
 
         
        
+    }
+    
+    func setColor(fgColor: Color, bgColor: Color) {
+        
+        self.bgColor = bgColor
+        self.fgColor = fgColor
     }
 }
 
