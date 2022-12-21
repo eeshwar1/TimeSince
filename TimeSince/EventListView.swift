@@ -53,7 +53,7 @@ struct EventListView: View {
                 
                         DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
                                        ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}),
-                                       bgColor: Color.orange,
+                                           bgColor: Color.blue,
                                        fgColor: Color.white)
                             
 
