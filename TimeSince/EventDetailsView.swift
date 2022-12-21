@@ -61,7 +61,7 @@ struct EventDetailsView: View {
         .padding(10)
         .frame(maxWidth: 300, maxHeight: 200)
         .border(.gray)
-        .background(.regularMaterial.shadow(.drop(color: .black, radius: 10)))
+        .background(.ultraThinMaterial.shadow(.drop(color: .black, radius: 10)))
         
         
     }
