@@ -11,6 +11,9 @@ struct EventView: View {
     
     var event: Event
     
+    @State var fgPrimaryColor = Color.white
+    @State var fgAccentColor = Color.yellow
+    
     var body: some View {
         
         GeometryReader { (geometry) in
@@ -24,15 +27,16 @@ struct EventView: View {
                                 .font(.largeTitle)
                                 .bold()
                                 .frame(minWidth: 200, alignment: .leading)
+                                .foregroundColor(fgPrimaryColor)
                             Spacer()
                                 .frame(minWidth: 10)
                             Text(event.daysSince)
-                                .foregroundColor(.blue)
+                                .foregroundColor(fgAccentColor)
                                 .font(.body)
                                 .frame(minWidth: 100)
                         }
                         HStack(alignment: .center) {
-                            Text(event.dateValue).foregroundColor(.black)
+                            Text(event.dateValue).foregroundColor(fgPrimaryColor)
                                 .font(.subheadline)
                                 .frame(width: 100, alignment: .leading)
                             Spacer()
@@ -40,7 +44,7 @@ struct EventView: View {
                             
                         }
                         HStack(alignment: .center) {
-                            Text(event.id.uuidString).foregroundColor(.gray)
+                            Text(event.id.uuidString).foregroundColor(fgPrimaryColor.opacity(0.5))
                                 .font(.subheadline)
                                 .frame(width: 300, alignment: .leading)
                             Spacer()
@@ -51,9 +55,11 @@ struct EventView: View {
                     .padding(20)
                     .frame(width: geometry.size.width - 40,
                            height: 100, alignment: .leading)
+                    .background(Color.secondary.opacity(0.5)).cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray, lineWidth: 4)
+                            
                     )
                     
                     
@@ -64,7 +70,8 @@ struct EventView: View {
         .padding(.bottom, 45)
         .padding(.leading, 10)
         
-        }
+        
+    }
         
        
 }
