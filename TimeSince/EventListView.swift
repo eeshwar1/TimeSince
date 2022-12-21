@@ -51,7 +51,11 @@ struct EventListView: View {
 //                        SortButton(field: "Name")
 //                        SortButton(field: "Date")
                 
-                        DropdownButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}), ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
+                        DropdownButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
+                                       ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}),
+                                       bgColor: Color.orange,
+                                       fgColor: Color.white)
+                            
 
                         
                     }
