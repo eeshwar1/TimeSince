@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DropdownButton: View {
+struct DropdownSortButton: View {
     
     @Binding var sortedBy: String
     @Binding var ascendingOrder: Bool
@@ -75,6 +75,6 @@ struct DropdownButton: View {
 
 struct DropDownButton_Previews: PreviewProvider {
     static var previews: some View {
-        DropdownButton(sortedBy: .constant("Name"), ascendingOrder: .constant(true))
+        DropdownSortButton(sortedBy: .constant("Name"), ascendingOrder: .constant(true))
     }
 }
