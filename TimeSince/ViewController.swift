@@ -20,6 +20,9 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.defaultBackground.cgColor
+        
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -189,5 +192,17 @@ class ViewController: NSViewController {
     }
     
     
+}
+
+extension NSColor {
+    static var defaultBackground: NSColor {
+        get {
+          return NSColor.init(
+               red: 83/255,
+               green: 87/255,
+               blue: 96/255,
+               alpha: 0.5)
+        }
+    }
 }
 
