@@ -18,7 +18,7 @@ struct EventListView: View {
     @State var currentEventID: UUID = UUID()
     
     @State var sortedBy: String = "Name"
-
+    
     @State var ascendingOrder: Bool = true
     
     @State var showingConfirmation: Bool = false
@@ -29,108 +29,106 @@ struct EventListView: View {
         
         GeometryReader { (geometry) in
             
+            
             ZStack {
                 VStack {
                     HStack {
                         
-                        Button(action: { executeAdd() }) {
-                            Label("",systemImage: "plus")
-                                .bold()
-                                .font(.system(size:20))
-                                .padding([.leading, .bottom], 10)
-                                .frame(width: 50, height: 50)
-                                .background(Color.blue)
-                                .foregroundColor(Color.white)
+                        Button {
+                            executeAdd()
+                            
                         }
-                        .frame(width: 50, height: 50)
-                        .background(Color.blue).cornerRadius(10)
-                        .keyboardShortcut("n")
-                        .help("New Event")
                         
-//
-//                        SortButton(field: "Name")
-//                        SortButton(field: "Date")
+                    label:  { Image(systemName: "plus")
+                        
+                            .font(.system(size:14))
+                        
+                    }
+                    .keyboardShortcut("n")
+                    .help("New Event")
                 
                         DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
-                                       ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}),
-                                           bgColor: Color.blue,
-                                       fgColor: Color.white)
+                                           ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
                             
-
+                        
+                        
+                        Button { refreshEvents() }
+                    label: {
+                        Image(systemName: "arrow.clockwise")
+                        
+                    }
+                    .buttonStyle(.bordered)
+                    .keyboardShortcut("n")
+                    .help("New Event")
+                        
                         
                     }
                     .padding(10)
                     .frame(width: geometry.size.width, height: 80, alignment: .leading)
                     
-                    EventStack
+                    Divider()
                         
+                    
+                    EventStack
+                    
+                    
+                    
                 }
                 .onAppear(
-                
+                    
                     perform: { let sortOrder = self.eventList.getSortOrder()
                         
                         self.sortedBy = sortOrder.sortedBy
                         self.ascendingOrder = sortOrder.ascendingOrder
                     }
                 )
-                .confirmationDialog("Delete Event", isPresented: $showingConfirmation) {
-                    
-                            
-                            Button("Yes") {
-                               
-                                executeDelete(id: currentEventID)
-                            }
-                    
-                            Button("No", role: .cancel) {
-                                
-                                
-                            }
-                        
-                            
-                } message: {
-                    Text("Do you want to delete the event \"\(currentEvent.name)\"")
-                }
+               
                 
                 if addNew {
-
-                    NewEventView(addNew: $addNew, controller: controller)
-                      
-                }
-                
-                if editEvent {
                     
-                    EventDetailsView(editEvent: $editEvent, event: currentEvent, controller: controller)
+                    NewEventView(addNew: $addNew, controller: controller)
+                    
                 }
+            
                 
             }
         }
     }
     
     func executeDelete(id: UUID) {
-            
-            print("Deleting event with id: \(id)")
         
-            self.showingConfirmation = false
+        print("Deleting event with id: \(id)")
+        
+        self.showingConfirmation = false
+        
+        if let controller = controller {
+            controller.deleteEvent(id: id)
             
-            if let controller = controller {
-                controller.deleteEvent(id: id)
-                
-            }
+        }
     }
-        
+    
     func executeAdd() {
         
         self.addNew = true
         
         
     }
-        
+    
     func setSortOrder() {
         
         self.eventList.setSortOrder(field: sortedBy, ascendingOrder: ascendingOrder)
         
     }
+    
+    func refreshEvents() {
         
+        if let controller = controller {
+            
+            controller.fetchEvents()
+            
+        }
+    }
+    
 }
 
 
@@ -145,62 +143,22 @@ extension EventListView {
                 ForEach(eventList.getEvents(), id: \.id) { event in
                     VStack {
                         HStack() {
-                            EventView(event: event)
+                            EventView(event: event, controller: controller)
                                 .contentShape(Rectangle())
-                                .onTapGesture{
-                                    
-                                    self.editEvent = true
-                                    self.currentEvent = event
-                                    
-                                }
-                            
-                            Button(action:
-                                    {
-                                 
-                                self.editEvent = true
-                                self.currentEvent = event
-                                
-                            }) {
-                                Label("",systemImage: "square.and.pencil")
-                                    .bold()
-                                    .font(.system(size:20))
-                                    .padding(10)
-                                    .frame(width: 50, height: 50)
-                                    .background(Color.yellow)
-                                    .foregroundColor(Color.white)
-                            }
-                                    .frame(width: 50, height: 50)
-                                    .background(Color.yellow).cornerRadius(10)
-                                    .help("Edit")
-                            
-                            Button(action:
-                                    {
-                                showingConfirmation = true
-                                currentEventID = event.id
-                                currentEvent = event
-                                
-                            }) {
-                                Label("",systemImage: "delete.backward")
-                                    .font(.system(size:20))
-                                    .bold()
-                                    .frame(width: 50, height: 50)
-                                    .background(Color.red)
-                                    .foregroundColor(Color.white)
-                            }
-                            .frame(width: 50, height: 50)
-                            .background(Color.red).cornerRadius(10)
-                            .help("Delete")
                             
                         }
                     }
                 }
             }
-            .padding(.init(top: 20, leading: 10, bottom: 50, trailing: 10))
-             
+            .padding(.init(top: 20, leading: 10, bottom: 20, trailing: 10))
+            
         }
         .padding(10)
         .scrollDisabled(false)
-         
+        
+        
+        
+        
     }
     
     func SortButton(field: String) -> some View {
@@ -211,7 +169,7 @@ extension EventListView {
             self.sortedBy = field
             
             self.ascendingOrder.toggle()
-
+            
             setSortOrder()
             
         } label: {
@@ -237,9 +195,9 @@ extension EventListView {
             
             
         }
-       .frame(width: 150, height: 50)
-       .background(Color.orange).cornerRadius(10)
-       .keyboardShortcut("s")
+        .frame(width: 150, height: 50)
+        .background(Color.orange).cornerRadius(10)
+        .keyboardShortcut("s")
         
         
         
@@ -247,7 +205,7 @@ extension EventListView {
     
     
     
-  
+    
 }
 
 struct SortButtonEx: View {
@@ -274,10 +232,10 @@ struct SortButtonEx: View {
                 .background(Color.orange)
                 .foregroundColor(Color.white)
             
-            }
-            .frame(width: 150, height: 50)
-            .background(Color.orange).cornerRadius(10)
-            .keyboardShortcut("s")
+        }
+        .frame(width: 150, height: 50)
+        .background(Color.orange).cornerRadius(10)
+        .keyboardShortcut("s")
             
             if showDropDown {
                 
@@ -287,38 +245,38 @@ struct SortButtonEx: View {
                         
                     }
                     
-                    label: { Text("Name")
-                            .bold()
-                            .padding(10)
-                            .frame(width: 150, height: 50)
-                            .background(Color.yellow)
+                label: { Text("Name")
+                        .bold()
+                        .padding(10)
+                        .frame(width: 150, height: 50)
+                        .background(Color.yellow)
                         .foregroundColor(Color.white)
-                        
                     
-                    }
-                    .frame(width: 150, height: 50)
-                    .background(Color.yellow).cornerRadius(5)
-                
+                    
+                }
+                .frame(width: 150, height: 50)
+                .background(Color.yellow).cornerRadius(5)
+                    
                     Button {
                         showDropDown = false
                         
                     }
                     
-                    label: { Text("Date")
-                            .bold()
-                            .padding(10)
-                            .frame(width: 150, height: 50)
-                            .background(Color.yellow)
-                            .foregroundColor(Color.white)
-                    }
-                    .frame(width: 150, height: 50)
-                    .background(Color.yellow).cornerRadius(5)
-            
-
+                label: { Text("Date")
+                        .bold()
+                        .padding(10)
+                        .frame(width: 150, height: 50)
+                        .background(Color.yellow)
+                        .foregroundColor(Color.white)
+                }
+                .frame(width: 150, height: 50)
+                .background(Color.yellow).cornerRadius(5)
+                    
+                    
                     
                 }.padding(.top, 150)
                 
-                 
+                
             }
             
         }
