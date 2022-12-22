@@ -13,8 +13,8 @@ struct DropdownSortButton: View {
     @Binding var ascendingOrder: Bool
     
     @State var bgColor: Color = Color.purple
-    @State var fgColor: Color = Color.white
-    @State var borderColor: Color = Color.white.opacity(0.5)
+    @State var fgColor: Color = Color.primary
+    @State var borderColor: Color = Color.primary.opacity(0.5)
 
     var body: some View {
         
@@ -34,33 +34,31 @@ struct DropdownSortButton: View {
             .menuStyle(.borderedButton)
             
         
-            Button (action: {
+            Button {
                 
                 ascendingOrder.toggle()
                 
-            }) {
+            }
+        label: {
                 
-                Label("",systemImage: ascendingOrder ? "arrow.down": "arrow.up")
-                    .font(.system(size:20))
-                    .bold()
-                    .padding([.leading, .bottom], 10)
-                    .frame(width: 40, height: 60)
-                    .background(bgColor).cornerRadius(5)
-                    .foregroundColor(fgColor)
-                    
+                Image(systemName: ascendingOrder ? "arrow.down": "arrow.up")
+                    .font(.system(size:14))
+                                        
                     
             }
-            .frame(width: 40, height: 40)
-            .background(bgColor).cornerRadius(5)
-            .border(borderColor, width: 2.0).cornerRadius(5)
+            
             .keyboardShortcut("s", modifiers: [.command, .shift])
             .help("Sort Order")
 
             
         }
         .padding(10)
-        .frame(width: 200, height: 50)
-        .background(bgColor).cornerRadius(5)
+        .frame(maxWidth: 200)
+        //.frame(width: 200, height: 50)
+        // .cornerRadius(5)
+        .overlay(RoundedRectangle(cornerRadius: 5)
+            .stroke(borderColor, lineWidth: 2))
+        //.background(bgColor).cornerRadius(5)
         
 
         
