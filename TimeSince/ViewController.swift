@@ -136,7 +136,7 @@ class ViewController: NSViewController {
                 
                 print("\(String(describing: eventEntity.id))")
                 self.managedContext.delete(eventEntity)
-                try self.managedContext.save()
+           
                 
             }
             
