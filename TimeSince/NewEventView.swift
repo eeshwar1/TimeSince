@@ -51,7 +51,6 @@ struct NewEventView: View {
         }
         .padding(10)
         .frame(maxWidth: 400, maxHeight: 200).cornerRadius(10)
-        .border(.gray, width: 4).cornerRadius(10)
         .background(.ultraThinMaterial.shadow(.drop(color: .black, radius: 20)))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(color: .black, radius: 10)
