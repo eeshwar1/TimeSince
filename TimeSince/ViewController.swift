@@ -20,8 +20,8 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.wantsLayer = true
-        self.view.layer?.backgroundColor = NSColor.defaultBackground.cgColor
+//        self.view.wantsLayer = true
+//        self.view.layer?.backgroundColor = NSColor.defaultBackground.cgColor
         
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
             return
@@ -53,7 +53,7 @@ class ViewController: NSViewController {
         hostingView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
     
-    fileprivate func fetchEvents() {
+    func fetchEvents() {
         
         let fetchRequest: NSFetchRequest<EventEntity>
         
@@ -67,6 +67,7 @@ class ViewController: NSViewController {
             
             let events = convertEvents(eventEntities: eventsEntities)
             
+            self.eventList.objectWillChange.send()
             self.eventList.setEvents(events: events)
             
             
@@ -135,6 +136,7 @@ class ViewController: NSViewController {
                 
                 print("\(String(describing: eventEntity.id))")
                 self.managedContext.delete(eventEntity)
+                try self.managedContext.save()
                 
             }
             
