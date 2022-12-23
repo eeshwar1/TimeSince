@@ -73,7 +73,10 @@ struct NewEventView: View {
     
     func cancelAdd() {
         
-        self.addNew = false
+//        withAnimation(.linear(duration: 0.1)) {
+            self.addNew = false
+//        }
+        
     }
 }
 
