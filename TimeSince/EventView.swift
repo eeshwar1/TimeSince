@@ -9,9 +9,8 @@ import SwiftUI
 
 struct EventView: View {
     
+    @Environment(\.colorScheme) var colorScheme
     @State var event: Event
-    
-    // TODO: Colors do not work well in Dark Mode. Text is not readable
     
     @State var fgPrimaryColor = Color.primary
     @State var fgAccentColor = Color.accentColor
@@ -19,6 +18,9 @@ struct EventView: View {
     @State var inEditMode:  Bool = false
     
     @State var showingDeleteConfirmation: Bool = false
+    
+    @State var previousName: String = ""
+    @State var previousDate: Date = Date()
     
     var controller: ViewController?
     
@@ -46,7 +48,12 @@ struct EventView: View {
                                         HStack {
                                             Button("Save",action: { updateEvent() })
                                                 .keyboardShortcut(.defaultAction)
-                                            Button("Cancel",action: { inEditMode = false })
+                                            
+                                            Button("Cancel",action: {
+                                                
+                                                event.name = previousName
+                                                event.date = previousDate
+                                                inEditMode = false })
                                                 .keyboardShortcut(.cancelAction)
                                         }
                                         
@@ -75,7 +82,7 @@ struct EventView: View {
                                 
                                 Button {
                                     
-                                    self.inEditMode = true
+                                    enterEditMode()
                                 }
                                 
                                 label: {
@@ -87,6 +94,22 @@ struct EventView: View {
                                 }
                                  .help("Edit")
                                 
+                                
+                                Button {
+                                    
+                        
+                                    print("Clone event")
+                                    cloneEvent()
+                                    
+                                }
+                                label: {
+                                    
+                                    Image(systemName: "square.on.square")
+                                        .font(.system(size: 14))
+                                        .bold()
+    
+                                }
+                                 .help("Duplicate")
                                 
                                 Button {
                                     
@@ -135,7 +158,7 @@ struct EventView: View {
                     .padding(10)
                     .frame(width: geometry.size.width,
                            height: inEditMode ? 120: 100, alignment: .leading)
-                    .background(Color.white).cornerRadius(10)
+                    .background(colorScheme == .light ? Color.white : Color.gray).cornerRadius(10)
                     .shadow(radius: 2, x: 0, y: 5)
                     .onTapGesture {
                         
@@ -169,7 +192,7 @@ struct EventView: View {
                 
                     
         } message: {
-            Text("Do you want to delete the event \"\(event.name)\"")
+            Text("Do you want to delete the event \n\"\(event.name)\"")
         }
         
         
@@ -185,10 +208,17 @@ struct EventView: View {
         }
     }
     
+    func cloneEvent() {
+        
+        if let controller = controller {
+            
+            controller.addEvent(event: Event(name:event.name + " - copy", date: event.date.stringFromDateShort()))
+        }
+    }
     
     func deleteEvent() {
             
-        print("Deleting event with id: \(event.id)")
+        // print("Deleting event with id: \(event.id)")
         
             self.showingDeleteConfirmation = false
             
@@ -201,7 +231,9 @@ struct EventView: View {
     
     func enterEditMode() {
         
-        // TODO: Preserve previous values in Edit Mode. Right now typing a new Name or selecting a new date will cause the values to be retained in the UI but not written to the database.
+        previousName = event.name
+        previousDate = event.date
+        
         self.inEditMode = true
         
     }
