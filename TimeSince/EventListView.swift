@@ -46,6 +46,7 @@ struct EventListView: View {
                     }
                     .keyboardShortcut("n")
                     .help("New Event")
+                    .disabled(addNew)
                 
                         DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
                                            ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
@@ -67,7 +68,7 @@ struct EventListView: View {
                     .frame(width: geometry.size.width, height: 80, alignment: .leading)
                     
                     Divider()
-                        
+                    
                     
                     EventStack
                     
@@ -85,9 +86,12 @@ struct EventListView: View {
                
                 
                 if addNew {
-                    
+
+                   
                     NewEventView(addNew: $addNew, controller: controller)
-                    
+                        .transition(.move(edge: .leading))
+                        .zIndex(100)
+               
                 }
             
                 
@@ -109,9 +113,11 @@ struct EventListView: View {
     
     func executeAdd() {
         
-        self.addNew = true
-        
-        
+//        withAnimation(.linear(duration: 0.2))  {
+            
+            self.addNew = true
+                
+//        }
     }
     
     func setSortOrder() {
