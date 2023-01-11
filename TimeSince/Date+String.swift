@@ -10,6 +10,15 @@ import Foundation
 extension Date {
     
     
+    func getYear() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY"
+        
+        
+        return dateFormatter.string(from: self)
+    }
+    
     func stringFromDateShort() -> String {
         
         let dateFormatter = DateFormatter()
