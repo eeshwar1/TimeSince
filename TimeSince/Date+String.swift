@@ -19,6 +19,15 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
+    func getMonth() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM"
+        
+        
+        return dateFormatter.string(from: self)
+    }
+    
     func stringFromDateShort() -> String {
         
         let dateFormatter = DateFormatter()
