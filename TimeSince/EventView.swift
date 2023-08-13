@@ -159,8 +159,8 @@ struct EventView: View {
                     .frame(width: geometry.size.width,
                            height: inEditMode ? 120: 100, alignment: .leading)
                     .background(colorScheme == .light ? Color.white : Color.gray).cornerRadius(10)
-                    .shadow(radius: 2, x: 0, y: 5)
-                    .onTapGesture {
+                    .shadow(radius: 1, x: 1, y: 5)
+                    .onTapGesture (count: 2) {
                         
                         self.enterEditMode()
                     }

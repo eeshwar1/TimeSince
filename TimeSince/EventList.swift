@@ -14,6 +14,20 @@ class EventList: ObservableObject {
     private var sortedBy: String = "Date"
     private var ascendingOrder: Bool = false
     
+    var eventYears: [Int]  {
+        
+        var years : [Int] = []
+        for event in events {
+            
+            let year = Int(event.date.getYear())!
+            if !years.contains(year) {
+                years.append(year)
+            }
+            
+        }
+        return years
+    }
+    
     init() {
         
         self.events = []
@@ -89,4 +103,6 @@ class EventList: ObservableObject {
         self.events = sortedEvents
         
     }
+    
+    
 }

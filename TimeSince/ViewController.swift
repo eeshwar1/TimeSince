@@ -16,12 +16,8 @@ class ViewController: NSViewController {
     
     @Published var eventList: EventList = EventList()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.view.wantsLayer = true
-//        self.view.layer?.backgroundColor = NSColor.defaultBackground.cgColor
         
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
             return
@@ -140,13 +136,15 @@ class ViewController: NSViewController {
                 
             }
             
-        } catch let error as NSError {
+        }
+        catch let error as NSError {
             print("Error fetching event: \(error)")
         }
     }
     
     func deleteEvent(id: UUID) {
         
+        print("Deleting event with id: \(id)")
         deleteEventEntity(id: id)
         
         fetchEvents()

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 struct EventListView: View {
     
@@ -13,6 +14,7 @@ struct EventListView: View {
     
     @State var addNew: Bool = false
     @State var editEvent: Bool  = false
+    @State var showTimeline: Bool = false
     
     @State var currentEvent = Event()
     @State var currentEventID: UUID = UUID()
@@ -25,83 +27,64 @@ struct EventListView: View {
     
     var controller: ViewController?
     
+        
     var body: some View {
         
         GeometryReader { (geometry) in
+
             
-            
-            ZStack {
-                VStack {
-                    HStack {
-                        
-                        Button {
-                            executeAdd()
+            NavigationStack {
+                
+                ZStack {
+                    
+                        VStack {
+                            
+                            ActionBar
+                            
+                            Divider()
+                            
+                            if showTimeline {
+                                
+                                EventTimelineView
+                            }
+                            else {
+                                
+                                EventStack
+                                
+                            }
+                            
                             
                         }
-                        
-                    label:  { Image(systemName: "plus")
-                        
-                            .font(.system(size:14))
-                        
-                    }
-                    .keyboardShortcut("n")
-                    .help("New Event")
-                    .disabled(addNew)
-                
-                        DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
-                                           ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
+                        .frame(alignment: .leading)
+                        .onAppear(
                             
+                            perform: { let sortOrder = self.eventList.getSortOrder()
+                                
+                                self.sortedBy = sortOrder.sortedBy
+                                self.ascendingOrder = sortOrder.ascendingOrder
+                            }
+                        )
                         
-                        
-                        Button { refreshEvents() }
-                    label: {
-                        Image(systemName: "arrow.clockwise")
-                        
-                    }
-                    .buttonStyle(.bordered)
-                    .keyboardShortcut("n")
-                    .help("New Event")
-                        
-                        
-                    }
-                    .padding(10)
-                    .frame(width: geometry.size.width, height: 80, alignment: .leading)
                     
-                    Divider()
-                    
-                    
-                    EventStack
-                    
-                    
-                    
-                }
-                .onAppear(
-                    
-                    perform: { let sortOrder = self.eventList.getSortOrder()
-                        
-                        self.sortedBy = sortOrder.sortedBy
-                        self.ascendingOrder = sortOrder.ascendingOrder
-                    }
-                )
-               
-                
-                if addNew {
+                        if addNew {
 
-                   
-                    NewEventView(addNew: $addNew, controller: controller)
-                        .transition(.move(edge: .leading))
-                        .zIndex(100)
-               
+                           
+                            NewEventView(addNew: $addNew, controller: controller)
+                                .transition(.move(edge: .leading))
+                                .zIndex(100)
+                       
+                        }
+                    
                 }
-            
                 
             }
+          
         }
     }
     
     func executeDelete(id: UUID) {
         
-        print("Deleting event with id: \(id)")
+        // print("Deleting event with id: \(id)")
         
         self.showingConfirmation = false
         
@@ -110,14 +93,11 @@ struct EventListView: View {
             
         }
     }
-    
+
     func executeAdd() {
-        
-//        withAnimation(.linear(duration: 0.2))  {
             
-            self.addNew = true
-                
-//        }
+        self.addNew = true
+            
     }
     
     func setSortOrder() {
@@ -135,35 +115,240 @@ struct EventListView: View {
         }
     }
     
+   
+   
 }
 
 
 extension EventListView {
     
+    private var ActionBar: some View {
+        
+        HStack {
+            
+            Button {
+                executeAdd()
+                
+            }
+            label:  { Image(systemName: "plus")
+                
+                    .font(.system(size:14))
+                
+            }
+            .keyboardShortcut("n")
+            .help("New Event")
+            .disabled(addNew)
+            
+            Button { refreshEvents() }
+            label: {
+                Image(systemName: "arrow.clockwise")
+                
+            }
+            .buttonStyle(.bordered)
+            .keyboardShortcut("r")
+            .help("Refresh")
+            
+           
+            Button {
+                
+                self.showTimeline.toggle()
+                    
+            }
+            label:  {
+                
+                Image(systemName: self.showTimeline ? "list.bullet": "calendar.day.timeline.leading")
+                
+                    .font(.system(size:14))
+                
+            }
+            .help(self.showTimeline ?  "Show List" : "Show Timeline")
+            
+        
+            if !showTimeline {
+                DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),
+                                   ascendingOrder: $ascendingOrder.didSet( { newValue in setSortOrder()}))
+            }
+            
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, minHeight: 80, alignment: .leading)
+            
+          
+    }
+    
+    
     private var EventStack: some View {
         
-        ScrollView {
+        ScrollView (showsIndicators: false) {
             
-            VStack(alignment: .center, spacing: 50) {
+            VStack(alignment: .center, spacing: 40) {
                 
                 ForEach(eventList.getEvents(), id: \.id) { event in
-                    VStack {
-                        HStack() {
-                            EventView(event: event, controller: controller)
-                                .contentShape(Rectangle())
-                            
+                        VStack {
+                            HStack() {
+                                EventView(event: event, controller: controller)
+                                    .contentShape(Rectangle())
+                                
+                            }
                         }
-                    }
                 }
+              
             }
             .padding(.init(top: 20, leading: 10, bottom: 20, trailing: 10))
             
         }
         .padding(10)
-        .scrollDisabled(false)
+        .frame(alignment: .leading)
+        
+    }
+    
+    private var EventTimelineView: some View {
+        
+        ScrollView (showsIndicators: false){
+            
+            VStack (spacing: 0) {
+                
+                let years = eventList.eventYears.sorted()
+                ForEach(years.indices, id: \.self) { index in
+                    
+                    VStack (spacing: 0) {
+                        
+                        YearView(year: String(years[index]))
+                            
+                        if ((index < years.count - 1) &&
+                            (years[index] + 1 < years[index + 1])) {
+                            
+                            Rectangle()
+                                .fill(.bar)
+                                .frame(width: 600, height: 10, alignment: .leading)
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        }
+        .padding(.init(top: 20, leading: 10, bottom: 20, trailing: 10))
+        .frame(alignment: .leading)
+        
+    }
+    
+    
+    func getYearEvents(year: String) -> [Event] {
+        
+        let yearEvents = eventList.getEvents().filter { $0.date.getYear() == year}
+        
+        return yearEvents
         
         
+    }
+                                 
+    func getMonthEvents(year: String, month: String) -> [Event] {
+         
+        let monthEvents = eventList.getEvents().filter { $0.date.getMonth() == month && $0.date.getYear() == year}
+         
+         return monthEvents
+         
+         
+     }
+    
+    @ViewBuilder
+    func YearView(year: String) -> some View {
         
+        let months=["Jan","Feb","Mar","Apr","May",
+                        "Jun","Jul","Aug","Sep","Oct",
+                        "Nov","Dec"]
+        
+        let yearHeight: CGFloat = 360.0
+        
+        HStack(spacing: 0) {
+            
+            Text("\(year)")
+                .offset(.init(width: 0, height: -yearHeight/2 - 40))
+                .bold()
+                .frame(width: 30, height: 10, alignment: .leading)
+                .font(.system(size: 10))
+            
+            
+            VStack(spacing: 0) {
+                
+                ForEach(months.indices, id: \.self) { index in
+                    
+                    MonthView(year: year, month: months[index])
+                }
+                .frame(width: 600, alignment: .leading)
+                
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func MonthView(year: String, month: String) -> some View {
+        
+        let eventPadding: CGFloat = -18
+        let expandEvents = false
+        let monthHeight: CGFloat = 40
+        let monthEventList = EventList(events: getMonthEvents(year: year, month: month))
+        
+        HStack(alignment: .center, spacing: 0) {
+            
+            Rectangle()
+                .fill(.gray)
+                .frame(width: 2, height: monthHeight)
+            
+            HStack  {
+                
+                Rectangle()
+                    .fill(.gray)
+                    .frame(width: 10, height: 1, alignment: .top)
+                Text("\(month)")
+                    .font(.system(size: 7))
+                
+                VStack (spacing: eventPadding){
+
+                    ForEach(monthEventList.getEvents(), id:\.id) {
+
+                        event in
+                        VStack {
+
+                            Text(event.name).foregroundColor(.white)
+                                .frame(width: 150, alignment: .center)
+                                .padding(2)
+                                .background(Color.brown).cornerRadius(5)
+                                .shadow(color: Color.black, radius: 2, x: 2, y: -2)
+
+
+                        }
+
+                    }
+
+                    if (monthEventList.getEvents().count > 1 && !expandEvents) {
+
+                             ZStack {
+                                 Circle()
+                                     .stroke(.white)
+                                     .background(Circle().fill(.red))
+                                     .frame(width: 20, height: 20, alignment: .leading)
+                                     .offset(.init(width: 75, height: -10))
+                                 Text("\(monthEventList.getEvents().count)")
+                                     .foregroundColor(Color.white)
+                                     .offset(.init(width: 75, height: -10))
+                             }
+
+                    }
+
+                }
+             
+    
+                
+                
+            }
+            .frame(width: 200, height: 20, alignment: .leading)
+                    
+        }
+        .contentShape(Rectangle())
         
     }
     
@@ -318,5 +503,18 @@ extension Binding {
                 didSet(newValue)
             }
         )
+    }
+}
+
+
+struct NavBackButton: View {
+    let dismiss: DismissAction
+    
+    var body: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image("...custom back button here")
+        }
     }
 }
