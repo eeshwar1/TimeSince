@@ -55,6 +55,7 @@ class EventList: ObservableObject {
     }
     func setSortOrder(field: String, ascendingOrder: Bool) {
         
+        // let _ = print("setSortOrder \(field) : \(ascendingOrder)")
         if (field.lowercased() == "name" ||
             field.lowercased() == "date") {
             
@@ -62,7 +63,7 @@ class EventList: ObservableObject {
             
         } else {
             
-            print("setSortOrder: ERROR Invalid sorted field \(field)")
+            let _ = print("setSortOrder: ERROR Invalid sorted field \(field)")
         }
         
         self.ascendingOrder = ascendingOrder
@@ -101,8 +102,23 @@ class EventList: ObservableObject {
         }
         
         self.events = sortedEvents
+        self.objectWillChange.send()
         
     }
     
+
+    func sortedYearsAsString() -> [String] {
+        
+        let sortedYears = self.eventYears.map { String($0) }
+        
+        
+        return sortedYears.sorted()
+    }
+    
+    func sortedYears() -> [Int] {
+        
+        
+        return self.eventYears.sorted()
+    }
     
 }

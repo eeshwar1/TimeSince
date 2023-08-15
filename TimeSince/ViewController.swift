@@ -33,9 +33,9 @@ class ViewController: NSViewController {
     
     fileprivate func setupSubviews() {
         
-        let eventListView = EventListView(eventList: self.eventList, controller: self)
+        let timeSinceView = TimeSinceView(eventList: self.eventList, controller: self)
         
-        let hostingView = NSHostingView(rootView: eventListView )
+        let hostingView = NSHostingView(rootView: timeSinceView )
         
         contentView.addSubview(hostingView)
         
@@ -109,7 +109,7 @@ class ViewController: NSViewController {
            
         } catch let error as NSError {
             
-            print("Error adding event: \(error)")
+            let _ = print("Error adding event: \(error)")
         }
     }
     
@@ -126,11 +126,8 @@ class ViewController: NSViewController {
             
             let fetchedResults = try self.managedContext.fetch(fetchRequest)
             
-            print(fetchedResults.count)
-            
             if let eventEntity = fetchedResults.first {
-                
-                print("\(String(describing: eventEntity.id))")
+              
                 self.managedContext.delete(eventEntity)
            
                 
@@ -138,13 +135,13 @@ class ViewController: NSViewController {
             
         }
         catch let error as NSError {
-            print("Error fetching event: \(error)")
+            let _ = print("Error fetching event: \(error)")
         }
     }
     
     func deleteEvent(id: UUID) {
         
-        print("Deleting event with id: \(id)")
+        let _ = print("Deleting event with id: \(id)")
         deleteEventEntity(id: id)
         
         fetchEvents()

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct MonthView: View {
     
+    @State var year: String
     @State var month: String
-    @State var monthHeight: CGFloat = 30
+    @State var monthHeight: CGFloat = 40
     @State var padding: CGFloat = 0
     @State var expandEvents: Bool = false
     @State var eventPadding: CGFloat = -18
     
-    @State var eventList: EventList = EventList()
+    @ObservedObject var eventList = EventList()
     
     var mouseLocation: NSPoint { NSEvent.mouseLocation }
     
@@ -23,8 +24,9 @@ struct MonthView: View {
     
     var body: some View {
         
+        let monthEvents = self.getMonthEvents(year: year, month: month)
+        
         HStack(alignment: .center, spacing: 0) {
-            
             Rectangle()
                 .fill(.gray)
                 .frame(width: 2, height: monthHeight)
@@ -43,17 +45,10 @@ struct MonthView: View {
             
             ZStack {
                 
-                if (expandEvents) {
-                    Rectangle()
-                        .fill(.bar)
-                        .frame(width: 200, height: monthHeight, alignment: .leading)
-                        
-                }
-                
                
                 VStack (spacing: eventPadding){
                       
-                    ForEach(eventList.getEvents(), id:\.id) {
+                    ForEach(monthEvents, id:\.id) {
                         
                         event in
                         VStack {
@@ -71,7 +66,7 @@ struct MonthView: View {
                         
                     }
                     
-                  if (eventList.getEvents().count > 1 && !expandEvents) {
+                    if (monthEvents.count > 1 && !expandEvents) {
                         
                         ZStack {
                             Circle()
@@ -79,7 +74,7 @@ struct MonthView: View {
                                 .background(Circle().fill(.red))
                                 .frame(width: 20, height: 20, alignment: .leading)
                                 .offset(.init(width: 75, height: -10))
-                            Text("\(eventList.getEvents().count)")
+                            Text("\(monthEvents.count)")
                                 .foregroundColor(Color.white)
                                 .offset(.init(width: 75, height: -10))
                         }
@@ -89,22 +84,18 @@ struct MonthView: View {
                     
             }
                 
-            
-                
-                
-                
-            }
+          }
         }
         .padding(padding)
         .contentShape(Rectangle())
         .onTapGesture(count: 2) {
             
-            withAnimation {
-                expandEvents.toggle()
+           // withAnimation {
                 
+                expandEvents.toggle()
                 eventPadding = expandEvents ? 5: -18
-                monthHeight = expandEvents ? CGFloat(eventList.getEvents().count * 30) : 30.0
-          }
+                monthHeight = expandEvents ? CGFloat(monthEvents.count * 30) : 30.0
+        //  }
             
         }
         .onHover { over in
@@ -123,6 +114,17 @@ struct MonthView: View {
        
     }
     
+    func getMonthEvents(year: String, month: String) -> [Event] {
+         
+        let monthEvents = eventList.getEvents().filter {
+            $0.date.getMonth() == month && $0.date.getYear() == year}
+         
+         return monthEvents
+         
+         
+     }
+    
+    
    
 }
 
@@ -134,6 +136,6 @@ struct MonthView_Previews: PreviewProvider {
             Event(name: "New Year 2021", date: "01/01/2021"),
             Event(name: "New Year 2021", date: "01/01/2021")]
         
-        MonthView(month: "Jan", padding: 10, expandEvents: true, eventList: EventList(events: events))
+        MonthView(year: "2023", month: "Jan", padding: 10, expandEvents: true, eventList: EventList(events: events))
     }
 }

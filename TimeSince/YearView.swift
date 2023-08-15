@@ -13,18 +13,18 @@ struct YearView: View {
     @State var yearHeight: CGFloat = 360.0
     @State var padding: CGFloat = 0
     
-    @State var eventList: EventList = EventList()
+    @ObservedObject var eventList = EventList()
     
     let months=["Jan","Feb","Mar","Apr","May",
                     "Jun","Jul","Aug","Sep","Oct",
                     "Nov","Dec"]
     
     var body: some View {
-        
+       
         HStack(spacing: 0) {
             
             Text("\(year)")
-                .offset(.init(width: 0, height: -yearHeight/2 + 10))
+                .offset(.init(width: 0, height: -yearHeight/2 - 40))
                 .bold()
                 .frame(width: 30, height: 10, alignment: .leading)
                 .font(.system(size: 10))
@@ -32,11 +32,10 @@ struct YearView: View {
             
             VStack(spacing: 0) {
                 
-                // let months = self.months.reversed()
                 ForEach(months.indices, id: \.self) { index in
                     
-                    MonthView(month: months[index], eventList:
-                                EventList(events: getMonthEvents(month: months[index])))
+                    MonthView(year: year, month: months[index], eventList:
+                                eventList)
                 }
                 .frame(width: 400, alignment: .leading)
                 
@@ -46,15 +45,6 @@ struct YearView: View {
         
     }
     
-    
-    func getMonthEvents(month: String) -> [Event] {
-        
-        let monthEvents = eventList.getEvents().filter { $0.date.getMonth() == month}
-        
-        return monthEvents
-        
-        
-    }
 }
 
 struct YearView_Previews: PreviewProvider {
