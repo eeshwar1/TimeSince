@@ -22,7 +22,7 @@ struct TimelineView: View {
                 ForEach(eventList.sortedYears(), id: \.self) { year in
            
 
-                    YearView(year: String(year), eventList: eventList)
+                    YearView(year: String(year), eventList: eventList, controller: controller)
     
                     
                     if let idx = eventList.sortedYears().firstIndex(of: year) {

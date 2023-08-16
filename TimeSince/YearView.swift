@@ -15,6 +15,8 @@ struct YearView: View {
     
     @ObservedObject var eventList = EventList()
     
+    var controller: ViewController?
+    
     let months=["Jan","Feb","Mar","Apr","May",
                     "Jun","Jul","Aug","Sep","Oct",
                     "Nov","Dec"]
@@ -35,7 +37,7 @@ struct YearView: View {
                 ForEach(months.indices, id: \.self) { index in
                     
                     MonthView(year: year, month: months[index], eventList:
-                                eventList)
+                                eventList, controller: controller)
                 }
                 .frame(width: 400, alignment: .leading)
                 
