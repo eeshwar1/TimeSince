@@ -161,9 +161,6 @@ extension Date {
         let years = dateComponents.year!
         let months = dateComponents.month!
         let days = dateComponents.day!
-//        let hours = dateComponents.hour!
-//        let minutes = dateComponents.minute!
-//        let seconds = dateComponents.second!
         
         var daysAgo = ""
         var tailString = ""
@@ -241,16 +238,84 @@ extension Date {
                 }
                 tailString = ""
             }
+           
+        }
+    
+        return daysAgo + tailString;
+    }
+    
+    func getWeeksSince() -> String {
         
+        let dateStr:String = self.stringFromDateLong()
+        
+        let formatter : DateFormatter = DateFormatter()
+        formatter.timeZone = NSTimeZone.local
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let now = formatter.string(from: NSDate() as Date)
+        let startDate = formatter.date(from: dateStr)
+        let endDate = formatter.date(from: now)
+        
+        // *** create calendar object ***
+        var calendar = NSCalendar.current
+        
+        // *** Get components using current Local & Timezone ***
+        // print(calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startDate!))
+        
+        // *** define calendar components to use as well Timezone to UTC ***
+        let unitFlags = Set<Calendar.Component>([.day])
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        let dateComponents = calendar.dateComponents(unitFlags, from: startDate!, to: endDate!)
+        
+        // *** Get Individual components from date ***
+        var days = dateComponents.day!
+        
+        var daysAgo = ""
+        var tailString = ""
+        
+        let weeks = days/7
+        
+        if (weeks > 0) {
             
-            
+            daysAgo = "\(weeks) weeks"
             
         }
+        days = days%7
         
-       
-        
-       
-        
+        if (days > 0) {
+            
+            if (daysAgo == "") {
+                daysAgo = "\(days) days"
+            } else {
+                
+                daysAgo = daysAgo + " and \(days) days"
+            }
+            tailString = " ago"
+           
+            
+        } else {
+            
+            if (days < 0) {
+                
+                if (daysAgo == "") {
+                    daysAgo = "\(-1 * days) days"
+                } else {
+                    
+                    daysAgo = daysAgo + " and \(-1 * days) days"
+                }
+                tailString = " from now"
+                
+            } else {
+                
+                if (daysAgo == "") {
+                    
+                    daysAgo = "Less than a day"
+                }
+                tailString = ""
+            }
+           
+        }
+    
         return daysAgo + tailString;
     }
     

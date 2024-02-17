@@ -8,6 +8,28 @@
     import SwiftUI
     import os
 
+
+
+private struct showWeeksKey: EnvironmentKey {
+    
+    static let defaultValue: Bool = false
+}
+
+extension EnvironmentValues {
+    
+    var showWeeks: Bool {
+        
+        get { self[showWeeksKey.self] }
+        set { self[showWeeksKey.self] = newValue}
+    }
+}
+
+extension View {
+    func showWeeks(_ showWeeksValue: Bool) -> some View {
+        environment(\.showWeeks, showWeeksValue)
+    }
+}
+
     struct TimeSinceView: View {
         
         @ObservedObject var eventList = EventList()
@@ -20,6 +42,9 @@
         @State var sortedBy: String = "Name"
         @State var ascendingOrder: Bool = true
         @State var showingConfirmation: Bool = false
+        
+        
+        @State var showWeeks: Bool = false
         
         var controller: ViewController?
         
@@ -43,7 +68,7 @@
                                 else {
                                     
                                     EventStack(eventList: eventList, controller: controller)
-                                    
+                                        .showWeeks(showWeeks)
                                 }
                                 
                                 
@@ -138,6 +163,10 @@
                 .help("Refresh")
                 
                
+                Toggle("Show Weeks", isOn: $showWeeks)
+                    .toggleStyle(.button)
+    	
+                
                 Button {
                     
                     self.showTimeline.toggle()
@@ -152,6 +181,8 @@
                 }
                 .help(self.showTimeline ?  "Show List" : "Show Timeline")
                 
+              
+             
             
                 if !showTimeline {
                     DropdownSortButton(sortedBy: $sortedBy.didSet({ newValue in setSortOrder()}),

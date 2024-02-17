@@ -38,6 +38,12 @@ class Event: Identifiable {
         
     }
     
+    var weeksSince: String {
+        
+        date.getWeeksSince()
+        
+    }
+
     init() {
         
         self._id = UUID()

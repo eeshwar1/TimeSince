@@ -10,6 +10,8 @@ import SwiftUI
 struct EventView: View {
     
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.showWeeks) var showWeeks
+  
     @State var event: Event
     
     @State var fgPrimaryColor = Color.primary
@@ -71,7 +73,7 @@ struct EventView: View {
                                     .truncationMode(.tail)
                                     .help(event.name)
                                 Spacer()
-                                Text(event.daysSince)
+                                Text(showWeeks ? event.weeksSince: event.daysSince)
                                     .foregroundColor(fgAccentColor)
                                     .font(.body)
                                     .frame(minWidth: 100)
